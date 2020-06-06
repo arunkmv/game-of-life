@@ -1,0 +1,7 @@
+.idea/
+project/
+target/
+test_run_dir/
+
+*.log
+*.vcd
