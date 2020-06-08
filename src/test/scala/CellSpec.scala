@@ -1,6 +1,7 @@
 import chisel3._
 import chiseltest._
 import org.scalatest._
+import gol.Cell
 
 class CellSpec extends FlatSpec with ChiselScalatestTester with Matchers {
 
