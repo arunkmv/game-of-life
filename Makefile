@@ -14,6 +14,7 @@ VERILATOR_CFLAGS = -std=c++11 -Icsrc/
 
 sims = \
 blinker \
+pulsar \
 
 define sim_template
 
@@ -34,6 +35,7 @@ sim-$(1): sim-$(1)/dut
 endef
 
 $(eval $(call sim_template,blinker,3x3))
+$(eval $(call sim_template,pulsar,15x15))
 
 all: $(addprefix sim-, $(sims))
 

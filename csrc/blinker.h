@@ -17,14 +17,12 @@ static void initialize_state(dut &m) {
 }
 
 static void display_state(dut &m, int gen) {
-    std::array<std::array<unsigned char*, 3>, 3> currState = map_3x3_curr(m);
-
     printf("Game Of Life - Blinker Pattern - 3 * 3");
-    printf("\n========\n\n");
+    printf("\n======\n\n");
 
     peek<3, 3>(map_3x3_curr(m));
 
-    printf("\n========\n\n");
+    printf("\n======\n\n");
     printf("Generation: %d\n", gen);
 }
 
