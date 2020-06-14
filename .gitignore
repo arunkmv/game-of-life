@@ -3,5 +3,6 @@ project/
 target/
 test_run_dir/
 
+sim-*/
 *.log
 *.vcd
