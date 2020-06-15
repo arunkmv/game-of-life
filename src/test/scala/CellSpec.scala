@@ -12,10 +12,11 @@ class CellSpec extends FlatSpec with ChiselScalatestTester with Matchers {
       false.B
     }
     test(new Cell(neighbours)) { c =>
-      c.io.initial.poke(initial.B)
-      c.io.valid.poke(true.B)
+      c.io.running.poke(true.B)
+      c.io.write_state.poke(initial.B)
+      c.io.write_enable.poke(true.B)
       c.clock.step(1)
-      c.io.valid.poke(false.B)
+      c.io.write_enable.poke(false.B)
       lifeInVicinity.zipWithIndex.foreach(i => c.io.lifeInVicinity(i._2).poke(i._1))
       c.clock.step(1)
       c.io.state.expect(expected.B)

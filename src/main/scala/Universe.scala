@@ -31,10 +31,10 @@ class Universe(gridX: Int, gridY: Int) extends Module {
 
   def inBounds(x: Int, y: Int): Boolean = n(x) && s(x) && e(y) && w(y)
 
-  def neighbourIndices(x: Int, y: Int): Seq[(Int, Int)] =
+  def neighbourIndices(x: Int, y: Int): Seq[(Int, Int)] = {
+    def vicinityCoords(i: Int) = Seq(i - 1, i, i + 1)
     vicinityCoords(y).flatMap(a => vicinityCoords(x).map(b => (a, b))).filterNot(_ == (y, x))
-
-  def vicinityCoords(x: Int) = Seq(x - 1, x, x + 1)
+  }
 
   def countNeighbours(x: Int, y: Int): Int =
     neighbourIndices(x, y).map(i => inBounds(i._2, i._1)).count(i => i)
@@ -44,13 +44,17 @@ class Universe(gridX: Int, gridY: Int) extends Module {
       Seq.range(0, gridX).map(x =>
         Module(new Cell(countNeighbours(x, y)))))
 
-  for (y <- 0 until gridY; x <- 0 until gridX) {
-    cells(y)(x).io.valid := io.valid
-    cells(y)(x).io.initial := io.seedState(y)(x)
+  for {  y <- 0 until gridY
+         x <- 0 until gridX
+         cell = cells(y)(x)
+  } {
+    cell.io.write_enable := io.valid
+    cell.io.write_state := io.seedState(y)(x)
+    cell.io.running := true.B
     neighbourIndices(x, y).filter(i => inBounds(i._2, i._1))
-      .zipWithIndex.foreach(j => cells(y)(x).io.lifeInVicinity(j._2) := cells(j._1._1)(j._1._2).io.state)
+      .zipWithIndex.foreach(j => cell.io.lifeInVicinity(j._2) := cells(j._1._1)(j._1._2).io.state)
 
-    io.state(y)(x) := cells(y)(x).io.state
+    io.state(y)(x) := cell.io.state
   }
 
   //printState()
