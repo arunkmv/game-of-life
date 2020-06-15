@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "helpers.h"
 
 int main() {
     dut module;
@@ -9,10 +10,7 @@ int main() {
 
     for (size_t i = 0; i < 10; i++) {
         module.reset = 1;
-        module.clock = 0;
-        module.eval();
-        module.clock = 1;
-        module.eval();
+        step(module);
     }
     module.reset = 0;
 
@@ -20,15 +18,16 @@ int main() {
 
     for (size_t cycle = 0;; cycle++) {
 
-        module.clock = 0;
-        module.eval();
+        //Runs the simulation for one generation and pauses it back again to display
+        module.io_pause = 1;
+        step(module);
+        step(module);
+        module.io_pause = 0;
+        step(module);
 
         system("clear");
         display_state(module, gen);
         usleep(500000);
-
-        module.clock = 1;
-        module.eval();
 
         gen++;
     }

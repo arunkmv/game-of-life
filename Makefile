@@ -21,7 +21,7 @@ define sim_template
 sim-$(1)/Sim_$(2).v: src/main/scala/*.scala
 	sbt "run $(2) -td sim-$(1)"
 
-sim-$(1)/dut.mk: sim-$(1)/Sim_$(2).v csrc/sim-gol.cpp csrc/$(1).h
+sim-$(1)/dut.mk: sim-$(1)/Sim_$(2).v csrc/*
 	$(VERILATOR) -cc --prefix dut --Mdir sim-$(1) -CFLAGS "$(VERILATOR_CFLAGS) -include ../csrc/$(1).h" sim-$(1)/Sim_$(2).v --exe csrc/sim-gol.cpp
 
 sim-$(1)/dut: sim-$(1)/dut.mk

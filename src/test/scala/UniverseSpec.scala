@@ -6,15 +6,36 @@ import org.scalatest._
 class UniverseSpec extends FlatSpec with ChiselScalatestTester with Matchers {
 
   def UniverseTest(gridX: Int, gridY: Int, initial: Seq[Seq[Int]], expected: Seq[Seq[Seq[Int]]]): Unit = {
+    def playOneGen(c: Universe) = {
+      c.io.pause.poke(true.B)
+      c.clock.step(2)
+      c.io.pause.poke(false.B)
+    }
 
     test(new Universe(gridX, gridY)) { c =>
-      initial.zipWithIndex.foreach(i => i._1.zipWithIndex.foreach(j => c.io.seedState(i._2)(j._2).poke(j._1.B)))
-      c.io.valid.poke(true.B)
+      c.io.pause.poke(true.B)
       c.clock.step(1)
-      c.io.valid.poke(false.B)
-      for (expectedState <- expected) {
+      c.io.pause.poke(false.B)
+
+      c.io.write_enable.poke(true.B)
+
+      initial.zipWithIndex.foreach(i => i._1.zipWithIndex.foreach(j => {
+        c.io.y_addr.poke(i._2.U)
+        c.io.x_addr.poke(j._2.U)
+        c.io.write_state.poke(j._1.B)
         c.clock.step(1)
-        expectedState.zipWithIndex.foreach(i => i._1.zipWithIndex.foreach(j => c.io.state(i._2)(j._2).expect(j._1.B)))
+      }))
+      c.io.write_enable.poke(false.B)
+
+      for (expectedState <- expected) {
+        playOneGen(c)
+        expectedState.zipWithIndex.foreach(i =>
+          i._1.zipWithIndex.foreach(j => {
+            c.io.y_addr.poke(i._2.U)
+            c.io.x_addr.poke(j._2.U)
+            c.io.state.expect(j._1.B)
+            c.clock.step(1)
+          }))
       }
     }
   }
