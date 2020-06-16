@@ -15,6 +15,7 @@ VERILATOR_CFLAGS = -std=c++11 -Icsrc/
 sims = \
 blinker \
 pulsar \
+random \
 
 define sim_template
 
@@ -36,6 +37,7 @@ endef
 
 $(eval $(call sim_template,blinker,3x3))
 $(eval $(call sim_template,pulsar,15x15))
+$(eval $(call sim_template,random,15x15))
 
 all: $(addprefix sim-, $(sims))
 
