@@ -4,11 +4,13 @@
 #include "dut.h"
 #include <array>
 
-static void step(dut &m) {
-    m.clock = 0;
-    m.eval();
-    m.clock = 1;
-    m.eval();
+static void step(dut &m, int times = 1) {
+    for (int i = 0; i < times; i++) {
+        m.clock = 0;
+        m.eval();
+        m.clock = 1;
+        m.eval();
+    }
 }
 
 template<size_t gridX, size_t gridY>

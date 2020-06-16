@@ -60,6 +60,8 @@ class Universe(gridX: Int, gridY: Int) extends Module {
       .zipWithIndex.foreach(j => cell.io.lifeInVicinity(j._2) := cells(j._1._1)(j._1._2).io.state)
   }
 
+  //TODO Single cell state readable per clock - heavy toll to get entire grid state
+  // Use a different read architecture - stream or parallel wires (Vec(Vec))
   io.state :=
     MuxLookup(io.y_addr, false.B,
       (0 until gridY).map(y =>

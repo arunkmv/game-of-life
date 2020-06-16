@@ -20,8 +20,7 @@ int main() {
 
         //Runs the simulation for one generation and pauses it back again to display
         module.io_pause = 1;
-        step(module);
-        step(module);
+        step(module, 2);
         module.io_pause = 0;
         step(module);
 
