@@ -11,7 +11,7 @@ class CellSpec extends FlatSpec with ChiselScalatestTester with Matchers {
     } ++ Seq.fill(neighbours - aliveNeighbours) {
       false.B
     }
-    test(new Cell(neighbours)) { c =>
+    test(new Cell(List.fill(neighbours){(0, 0)})) { c =>
       c.io.running.poke(true.B)
       c.io.write_state.poke(initial.B)
       c.io.write_enable.poke(true.B)
