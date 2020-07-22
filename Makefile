@@ -38,6 +38,7 @@ endef
 $(eval $(call sim_template,blinker,3x3))
 $(eval $(call sim_template,pulsar,15x15))
 $(eval $(call sim_template,random,15x15))
+$(eval $(call sim_template,random_large,40x40))
 
 all: $(addprefix sim-, $(sims))
 
