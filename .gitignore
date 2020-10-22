@@ -1,4 +1,7 @@
 .idea/
+.bloop/
+.metals/
+
 project/
 target/
 test_run_dir/
@@ -6,3 +9,4 @@ test_run_dir/
 sim-*/
 *.log
 *.vcd
+*.v
